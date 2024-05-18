@@ -29,6 +29,12 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
+      # Set namespace name to ar_location_view to fix missing namespace
+      - name: Set namespace in build.gradle
+        run: |
+          echo "android { namespace 'com.example.arlocationview' }" >> /opt/hostedtoolcache/flutter/3.22.0-stable/x64/.pub-cache/hosted/pub.dev/ar_location_view-2.0.10/android/build.gradle
+
+
       # Build APK
       - name: Build APK
         run: flutter build apk --release
