@@ -1,0 +1,77 @@
+{
+  "project_info": {
+    "project_number": "600418100062",
+    "firebase_url": "https://teratour-beb71.firebaseio.com",
+    "project_id": "teratour-beb71",
+    "storage_bucket": "teratour-beb71.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:600418100062:android:32f48bfb1238ac571865cf",
+        "android_client_info": {
+          "package_name": "com.itera.teratour"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "600418100062-3c872h6vul6m7lal71e7l0f9nobbfskg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQRe6twU_eDtTbsOIVnRx2A6-vZExpzWo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "600418100062-3c872h6vul6m7lal71e7l0f9nobbfskg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:600418100062:android:7aa0e17ae3006c7b",
+        "android_client_info": {
+          "package_name": "com.pikkart.trial"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "600418100062-v4lvhjmn6fb7phsgrjcpn6e9msug977o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pikkart.trial",
+            "certificate_hash": "a09c8eb473e4b1c57c262a504a06166262d9d1e7"
+          }
+        },
+        {
+          "client_id": "600418100062-3c872h6vul6m7lal71e7l0f9nobbfskg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQRe6twU_eDtTbsOIVnRx2A6-vZExpzWo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "600418100062-3c872h6vul6m7lal71e7l0f9nobbfskg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
