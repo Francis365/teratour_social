@@ -242,10 +242,10 @@ packages:
     dependency: "direct main"
     description:
       name: geoflutterfire
-      sha256: e1eb5350145f61230e7cf8e241b143068b3c1d4ca84325f0bf9b357e7f2d5a89
+      sha256: "80f7cd370c878334f961208ef4a82f5c6d2d163ae81210a98c24f0a87f90cd52"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.3"
+    version: "3.0.2"
   geolocator:
     dependency: "direct main"
     description:
