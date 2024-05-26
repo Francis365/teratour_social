@@ -207,9 +207,9 @@ class _CloudAnchorWidgetState extends State<CloudAnchorWidget> {
   }
 
   Future<void> onRemoveEverything() async {
-    anchors.forEach((anchor) {
-      this.arAnchorManager!.removeAnchor(anchor);
-    });
+    for (var anchor in anchors) {
+      arAnchorManager!.removeAnchor(anchor);
+    }
     anchors = [];
     if (lastUploadedAnchor != "") {
       setState(() {
@@ -227,7 +227,7 @@ class _CloudAnchorWidgetState extends State<CloudAnchorWidget> {
   Future<void> onNodeTapped(List<String> nodeNames) async {
     var foregroundNode =
         nodes.firstWhere((element) => element.name == nodeNames.first);
-    this.arSessionManager!.onError(foregroundNode.data!["onTapText"]);
+    arSessionManager!.onError(foregroundNode.data!["onTapText"]);
   }
 
   Future<void> onPlaneOrPointTapped(
@@ -244,24 +244,23 @@ class _CloudAnchorWidgetState extends State<CloudAnchorWidget> {
         var newNode = ARNode(
             type: NodeType.webGLB,
             uri:
-                "https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/Duck/glTF-Binary/Duck.glb",
+                "https://github.com/KhronosGroup/glTF-Sample-Models/tree/main/2.0/Duck/glTF-Binary/Duck.glb",
             scale: Vector3(0.2, 0.2, 0.2),
             position: Vector3(0.0, 0.0, 0.0),
             rotation: Vector4(1.0, 0.0, 0.0, 0.0),
             data: {"onTapText": "Ouch, that hurt!"});
-        bool? didAddNodeToAnchor = await this
-            .arObjectManager!
-            .addNode(newNode, planeAnchor: newAnchor);
+        bool? didAddNodeToAnchor =
+            await arObjectManager!.addNode(newNode, planeAnchor: newAnchor);
         if (didAddNodeToAnchor ?? false) {
-          this.nodes.add(newNode);
+          nodes.add(newNode);
           setState(() {
             readyToUpload = true;
           });
         } else {
-          this.arSessionManager!.onError("Adding Node to Anchor failed");
+          arSessionManager!.onError("Adding Node to Anchor failed");
         }
       } else {
-        this.arSessionManager!.onError("Adding Anchor failed");
+        arSessionManager!.onError("Adding Anchor failed");
       }
     }
   }

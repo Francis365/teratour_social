@@ -5,17 +5,17 @@ import 'package:teratour/ar_window.dart';
 import 'package:teratour/examples/cloudanchorexample.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const Teratour());
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+class Teratour extends StatefulWidget {
+  const Teratour({super.key});
 
   @override
-  State<MyApp> createState() => _MyAppState();
+  State<Teratour> createState() => _TeratourState();
 }
 
-class _MyAppState extends State<MyApp> {
+class _TeratourState extends State<Teratour> {
   String _platformVersion = 'Unknown';
 
   @override

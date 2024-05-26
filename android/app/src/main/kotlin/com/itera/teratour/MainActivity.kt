@@ -1,4 +1,4 @@
-package com.example.teratour
+package com.itera.teratour
 
 import io.flutter.embedding.android.FlutterActivity
 
