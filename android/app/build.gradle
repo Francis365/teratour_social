@@ -62,15 +62,12 @@ android {
         }
     }
 
-    // buildFeatures {
-    //     buildConfig = true
-    // }
-
+    buildFeatures {
+        buildConfig = true
+    }
 
    namespace 'com.itera.teratour'
 }
-
-android.buildFeatures.buildConfig true
 
 
 flutter {
