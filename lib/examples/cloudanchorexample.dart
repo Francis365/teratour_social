@@ -237,9 +237,9 @@ class _CloudAnchorWidgetState extends State<CloudAnchorWidget> {
     if (singleHitTestResult != null) {
       var newAnchor = ARPlaneAnchor(
           transformation: singleHitTestResult.worldTransform, ttl: 2);
-      bool? didAddAnchor = await this.arAnchorManager!.addAnchor(newAnchor);
+      bool? didAddAnchor = await arAnchorManager!.addAnchor(newAnchor);
       if (didAddAnchor ?? false) {
-        this.anchors.add(newAnchor);
+        anchors.add(newAnchor);
         // Add note to anchor
         var newNode = ARNode(
             type: NodeType.webGLB,
@@ -266,7 +266,7 @@ class _CloudAnchorWidgetState extends State<CloudAnchorWidget> {
   }
 
   Future<void> onUploadButtonPressed() async {
-    this.arAnchorManager!.uploadAnchor(this.anchors.last);
+    arAnchorManager!.uploadAnchor(anchors.last);
     setState(() {
       readyToUpload = false;
     });
@@ -275,7 +275,7 @@ class _CloudAnchorWidgetState extends State<CloudAnchorWidget> {
   onAnchorUploaded(ARAnchor anchor) {
     // Upload anchor information to firebase
     firebaseManager.uploadAnchor(anchor,
-        currentLocation: this.arLocationManager!.currentLocation);
+        currentLocation: arLocationManager!.currentLocation);
     // Upload child nodes to firebase
     if (anchor is ARPlaneAnchor) {
       anchor.childNodes.forEach((nodeName) => firebaseManager.uploadObject(
@@ -285,7 +285,7 @@ class _CloudAnchorWidgetState extends State<CloudAnchorWidget> {
       readyToDownload = true;
       readyToUpload = false;
     });
-    this.arSessionManager!.onError("Upload successful");
+    arSessionManager!.onError("Upload successful");
   }
 
   ARAnchor onAnchorDownloaded(Map<String, dynamic> serializedAnchor) {
@@ -293,7 +293,7 @@ class _CloudAnchorWidgetState extends State<CloudAnchorWidget> {
         anchorsInDownloadProgress[serializedAnchor["cloudanchorid"]]
             as Map<String, dynamic>);
     anchorsInDownloadProgress.remove(anchor.cloudanchorid);
-    this.anchors.add(anchor);
+    anchors.add(anchor);
 
     // Download nodes attached to this anchor
     firebaseManager.getObjectsFromAnchor(anchor, (snapshot) {
@@ -301,7 +301,7 @@ class _CloudAnchorWidgetState extends State<CloudAnchorWidget> {
         ARNode object =
             ARNode.fromMap(objectDoc.data() as Map<String, dynamic>);
         arObjectManager!.addNode(object, planeAnchor: anchor);
-        this.nodes.add(object);
+        nodes.add(object);
       });
     });
 
@@ -317,19 +317,18 @@ class _CloudAnchorWidgetState extends State<CloudAnchorWidget> {
     //});
 
     // Get anchors within a radius of 100m of the current device's location
-    if (this.arLocationManager!.currentLocation != null) {
+    if (arLocationManager!.currentLocation != null) {
       firebaseManager.downloadAnchorsByLocation((snapshot) {
         final cloudAnchorId = snapshot.get("cloudanchorid");
         anchorsInDownloadProgress[cloudAnchorId] =
             snapshot.data() as Map<String, dynamic>;
         arAnchorManager!.downloadAnchor(cloudAnchorId);
-      }, this.arLocationManager!.currentLocation, 0.1);
+      }, arLocationManager!.currentLocation, 0.1);
       setState(() {
         readyToDownload = false;
       });
     } else {
-      this
-          .arSessionManager!
+      arSessionManager!
           .onError("Location updates not running, can't download anchors");
     }
   }
