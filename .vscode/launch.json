@@ -1,0 +1,45 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "teratour",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "teratour (profile mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "teratour (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "ar_location_view",
+            "cwd": "ar_location_view",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "ar_location_view (profile mode)",
+            "cwd": "ar_location_view",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "ar_location_view (release mode)",
+            "cwd": "ar_location_view",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
