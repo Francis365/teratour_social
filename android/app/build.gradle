@@ -62,6 +62,10 @@ android {
         }
     }
 
+    buildFeatures {
+        buildConfig true
+    }
+
 
    namespace 'com.itera.teratour'
 }
