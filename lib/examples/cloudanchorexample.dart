@@ -10,6 +10,8 @@ import 'package:ar_flutter_plugin/datatypes/node_types.dart';
 import 'package:ar_flutter_plugin/datatypes/hittest_result_types.dart';
 import 'package:ar_flutter_plugin/models/ar_node.dart';
 import 'package:ar_flutter_plugin/models/ar_hittest_result.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:teratour/annotations.dart';
 import 'package:vector_math/vector_math_64.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -17,7 +19,8 @@ import 'package:geoflutterfire/geoflutterfire.dart';
 import 'package:geolocator/geolocator.dart';
 
 class CloudAnchorWidget extends StatefulWidget {
-  const CloudAnchorWidget({super.key});
+  final Annotation annotation;
+  const CloudAnchorWidget({super.key, required this.annotation});
   @override
   State<CloudAnchorWidget> createState() => _CloudAnchorWidgetState();
 }
@@ -43,10 +46,11 @@ class _CloudAnchorWidgetState extends State<CloudAnchorWidget> {
 
   @override
   void initState() {
-    firebaseManager.initializeFlutterFire().then((value) => setState(() {
-          _initialized = value;
-          _error = !value;
-        }));
+    grantPermission().then((success) =>
+        firebaseManager.initializeFlutterFire().then((value) => setState(() {
+              _initialized = value;
+              _error = !value;
+            })));
 
     super.initState();
   }
@@ -57,6 +61,28 @@ class _CloudAnchorWidgetState extends State<CloudAnchorWidget> {
     arSessionManager!.dispose();
   }
 
+  Future<bool> grantPermission() async {
+    try {
+      var status = await Permission.camera.status;
+      if (status.isDenied) {
+        // We haven't asked for permission yet or the permission has been denied before
+        await Permission.camera.request();
+      }
+
+      status = await Permission.location.status;
+      if (status.isDenied) {
+        // We haven't asked for permission yet or the permission has been denied before
+        await Permission.location.request();
+      }
+    } catch (error) {
+      debugPrint('Error: $error');
+
+      return false;
+    }
+
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     // Show error message if initialization failed
@@ -65,15 +91,14 @@ class _CloudAnchorWidgetState extends State<CloudAnchorWidget> {
           appBar: AppBar(
             title: const Text('Cloud Anchors'),
           ),
-          body: Container(
-              child: Center(
-                  child: Column(
+          body: Center(
+              child: Column(
             children: [
               const Text("Firebase initialization failed"),
               ElevatedButton(
                   child: const Text("Retry"), onPressed: () => {initState()})
             ],
-          ))));
+          )));
     }
 
     // Show a loader until FlutterFire is initialized
@@ -276,8 +301,10 @@ class _CloudAnchorWidgetState extends State<CloudAnchorWidget> {
         currentLocation: arLocationManager!.currentLocation);
     // Upload child nodes to firebase
     if (anchor is ARPlaneAnchor) {
-      anchor.childNodes.forEach((nodeName) => firebaseManager.uploadObject(
-          nodes.firstWhere((element) => element.name == nodeName)));
+      for (var nodeName in anchor.childNodes) {
+        firebaseManager.uploadObject(
+            nodes.firstWhere((element) => element.name == nodeName));
+      }
     }
     setState(() {
       readyToDownload = true;
@@ -295,12 +322,12 @@ class _CloudAnchorWidgetState extends State<CloudAnchorWidget> {
 
     // Download nodes attached to this anchor
     firebaseManager.getObjectsFromAnchor(anchor, (snapshot) {
-      snapshot.docs.forEach((objectDoc) {
+      for (var objectDoc in snapshot.docs) {
         ARNode object =
             ARNode.fromMap(objectDoc.data() as Map<String, dynamic>);
         arObjectManager!.addNode(object, planeAnchor: anchor);
         nodes.add(object);
-      });
+      }
     });
 
     return anchor;
@@ -448,9 +475,9 @@ class FirebaseManager {
         .within(center: center, radius: radius, field: 'position');
 
     stream.listen((List<DocumentSnapshot> documentList) {
-      documentList.forEach((element) {
+      for (var element in documentList) {
         listener(element);
-      });
+      }
     });
   }
 

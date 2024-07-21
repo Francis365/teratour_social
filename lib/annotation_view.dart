@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:teratour/examples/cloudanchorexample.dart';
+import 'package:teratour/web_ar.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'annotations.dart';
 
@@ -12,29 +15,38 @@ class AnnotationView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-        color: Colors.white,
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(5),
-                  bottomLeft: Radius.circular(5),
-                ),
-              ),
-              child: typeFactory(annotation.type),
-            ),
+    return InkWell(
+      onTap: () {
+        // launchUrl(Uri.parse("https://francis365.github.io/Teratour-Web-AR2wotnk/"));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CloudAnchorWidget(annotation: annotation),
           ),
-          Expanded(
-            flex: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: Column(
+        );
+      },
+      child: FittedBox(
+        fit: BoxFit.contain,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 1),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.white,
+          ),
+          child: Row(
+            children: [
+              Container(
+                // padding: const EdgeInsets.all(8.0),
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(5),
+                    bottomLeft: Radius.circular(5),
+                  ),
+                ),
+                child: typeFactory(annotation.type),
+              ),
+              const SizedBox(width: 5),
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -47,10 +59,10 @@ class AnnotationView extends StatelessWidget {
                     '${annotation.distanceFromUser.toInt()} m',
                   ),
                 ],
-              ),
-            ),
-          )
-        ],
+              )
+            ],
+          ),
+        ),
       ),
     );
   }
@@ -74,7 +86,7 @@ class AnnotationView extends StatelessWidget {
     }
     return Icon(
       iconData,
-      size: 40,
+      size: 24,
       color: color,
     );
   }

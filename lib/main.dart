@@ -66,7 +66,7 @@ class _TeratourState extends State<Teratour> {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const CloudAnchorWidget(),
+      home: const ArWindow(),
     );
   }
 }

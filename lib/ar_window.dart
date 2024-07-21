@@ -17,28 +17,42 @@ class _ArWindowState extends State<ArWindow> {
 
   @override
   Widget build(BuildContext context) {
+    // Future<void> requestCameraPermission() async {
+    //   final status = await Permission.camera.request();
+    //   if (status == PermissionStatus.granted) {
+    //     // Permission granted.
+    //   } else if (status == PermissionStatus.denied) {
+    //     // Permission denied.
+    //   } else if (status == PermissionStatus.permanentlyDenied) {
+    //     // Permission permanently denied.
+    //   }
+    // }
+
     return Stack(
       fit: StackFit.expand,
       children: [
-        ArLocationWidget(
-            annotations: annotations,
-            annotationViewBuilder: (context, annotation) {
-              return AnnotationView(annotation: annotation as Annotation);
-            },
-            onLocationChange: (Position position) {
-              if (annotations.isNotEmpty) {
-                return;
-              }
+        Material(
+          child: ArLocationWidget(
+              annotations: annotations,
+              annotationViewBuilder: (context, annotation) {
+                return AnnotationView(annotation: annotation as Annotation);
+              },
+              onLocationChange: (Position position) {
+                if (annotations.isNotEmpty) {
+                  return;
+                }
 
-              Future.delayed(const Duration(seconds: 5), () {
-                setState(() {
-                  annotations = fakeAnnotation(
-                    position: position,
-                    distance: 1500,
-                  );
+                Future.delayed(const Duration(seconds: 5), () {
+                  setState(() {
+                    annotations = fakeAnnotation(
+                      position: position,
+                      distance: 1500,
+                      numberMaxPoi: 5,
+                    );
+                  });
                 });
-              });
-            }),
+              }),
+        ),
         // GameWidget(game: MyGame())
       ],
     );

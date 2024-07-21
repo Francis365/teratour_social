@@ -14,7 +14,7 @@ typedef ChangeLocationCallback = void Function(Position position);
 
 class ArView extends StatefulWidget {
   const ArView({
-    Key? key,
+    super.key,
     required this.annotations,
     required this.annotationViewBuilder,
     required this.frame,
@@ -26,7 +26,7 @@ class ArView extends StatefulWidget {
     this.paddingOverlap = 5,
     this.yOffsetOverlap,
     required this.minDistanceReload,
-  }) : super(key: key);
+  });
 
   final List<ArAnnotation> annotations;
   final AnnotationViewBuilder annotationViewBuilder;
@@ -68,8 +68,8 @@ class _ArViewState extends State<ArView> {
 
   @override
   Widget build(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.sizeOf(context).width;
+    final height = MediaQuery.sizeOf(context).height;
     return StreamBuilder(
       stream: ArSensorManager.instance.arSensor,
       builder: (context, data) {

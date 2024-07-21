@@ -22,6 +22,21 @@ allprojects {
 rootProject.buildDir = '../build'
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
+
+    afterEvaluate {
+        // check if android block is available
+
+        if (it.hasProperty('android')) {
+
+            if (it.android.namespace == null) {
+                def manifest = new XmlSlurper().parse(file(it.android.sourceSets.main.manifest.srcFile))
+                def packageName = manifest.@package.text()
+                // println("Setting ${packageName} as android namespace")
+                android.namespace = packageName
+            }
+
+        }
+    }
 }
 subprojects {
     project.evaluationDependsOn(':app')

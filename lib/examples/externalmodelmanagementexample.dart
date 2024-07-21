@@ -17,9 +17,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
 
 class ExternalModelManagementWidget extends StatefulWidget {
-  ExternalModelManagementWidget({Key? key}) : super(key: key);
+  const ExternalModelManagementWidget({super.key});
   @override
-  _ExternalModelManagementWidgetState createState() =>
+  State<ExternalModelManagementWidget> createState() =>
       _ExternalModelManagementWidgetState();
 }
 
@@ -538,7 +538,8 @@ class ModelSelectionWidget extends StatefulWidget {
   final Function onTap;
   final FirebaseManager firebaseManager;
 
-  ModelSelectionWidget({required this.onTap, required this.firebaseManager});
+  const ModelSelectionWidget(
+      {required this.onTap, required this.firebaseManager});
 
   @override
   _ModelSelectionWidgetState createState() => _ModelSelectionWidgetState();
