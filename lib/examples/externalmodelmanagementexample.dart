@@ -41,7 +41,7 @@ class _ExternalModelManagementWidgetState
   String lastUploadedAnchor = "";
   AvailableModel selectedModel = AvailableModel(
       "Duck",
-      "https://github.com/KhronosGroup/glTF-Sample-Models/raw/master/2.0/Duck/glTF-Binary/Duck.glb",
+      "https://github.com/KhronosGroup/glTF-Sample-Models/blob/main/2.0/Duck/glTF-Binary/Duck.glb",
       "");
 
   bool readyToUpload = false;
