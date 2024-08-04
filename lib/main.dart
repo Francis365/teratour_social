@@ -2,7 +2,6 @@ import 'package:ar_flutter_plugin/ar_flutter_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:teratour/ar_window.dart';
-import 'package:teratour/examples/cloudanchorexample.dart';
 
 void main() {
   runApp(const Teratour());

@@ -3,6 +3,8 @@ import 'package:ar_flutter_plugin/managers/ar_session_manager.dart';
 import 'package:ar_flutter_plugin/managers/ar_object_manager.dart';
 import 'package:ar_flutter_plugin/managers/ar_anchor_manager.dart';
 import 'package:ar_flutter_plugin/models/ar_anchor.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:ar_flutter_plugin/ar_flutter_plugin.dart';
 import 'package:ar_flutter_plugin/datatypes/config_planedetection.dart';
@@ -12,6 +14,7 @@ import 'package:ar_flutter_plugin/models/ar_node.dart';
 import 'package:ar_flutter_plugin/models/ar_hittest_result.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:teratour/annotations.dart';
+import 'package:teratour/helpers.dart';
 import 'package:vector_math/vector_math_64.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -296,39 +299,59 @@ class _CloudAnchorWidgetState extends State<CloudAnchorWidget> {
   }
 
   onAnchorUploaded(ARAnchor anchor) {
-    // Upload anchor information to firebase
-    firebaseManager.uploadAnchor(anchor,
-        currentLocation: arLocationManager!.currentLocation);
-    // Upload child nodes to firebase
-    if (anchor is ARPlaneAnchor) {
-      for (var nodeName in anchor.childNodes) {
-        firebaseManager.uploadObject(
-            nodes.firstWhere((element) => element.name == nodeName));
+    showToast("Uploading Cloud Anchor ....");
+
+    try {
+      // Upload anchor information to firebase
+      firebaseManager.uploadAnchor(anchor,
+          currentLocation: arLocationManager!.currentLocation);
+      // Upload child nodes to firebase
+      if (anchor is ARPlaneAnchor) {
+        for (var nodeName in anchor.childNodes) {
+          firebaseManager.uploadObject(
+              nodes.firstWhere((element) => element.name == nodeName));
+        }
       }
+      setState(() {
+        readyToDownload = true;
+        readyToUpload = false;
+      });
+
+      showToast("Upload successful");
+
+      arSessionManager!.onError("Upload successful");
+    } catch (error) {
+      showToast(error);
     }
-    setState(() {
-      readyToDownload = true;
-      readyToUpload = false;
-    });
-    arSessionManager!.onError("Upload successful");
   }
 
   ARAnchor onAnchorDownloaded(Map<String, dynamic> serializedAnchor) {
-    final anchor = ARPlaneAnchor.fromJson(
-        anchorsInDownloadProgress[serializedAnchor["cloudanchorid"]]
-            as Map<String, dynamic>);
-    anchorsInDownloadProgress.remove(anchor.cloudanchorid);
-    anchors.add(anchor);
+    showToast("Downloading Cloud Anchor ....");
 
-    // Download nodes attached to this anchor
-    firebaseManager.getObjectsFromAnchor(anchor, (snapshot) {
-      for (var objectDoc in snapshot.docs) {
-        ARNode object =
-            ARNode.fromMap(objectDoc.data() as Map<String, dynamic>);
-        arObjectManager!.addNode(object, planeAnchor: anchor);
-        nodes.add(object);
-      }
-    });
+    ARPlaneAnchor? anchor;
+    try {
+      anchor = ARPlaneAnchor.fromJson(
+          anchorsInDownloadProgress[serializedAnchor["cloudanchorid"]]
+              as Map<String, dynamic>);
+      anchorsInDownloadProgress.remove(anchor.cloudanchorid);
+      anchors.add(anchor);
+
+      // Download nodes attached to this anchor
+      firebaseManager.getObjectsFromAnchor(anchor, (snapshot) {
+        for (var objectDoc in snapshot.docs) {
+          ARNode object =
+              ARNode.fromMap(objectDoc.data() as Map<String, dynamic>);
+          arObjectManager!.addNode(object, planeAnchor: anchor);
+          nodes.add(object);
+        }
+      });
+    } catch (error) {
+      showToast(error);
+
+      return anchor!;
+    }
+
+    showToast("Downloaded Cloud Anchor");
 
     return anchor;
   }
@@ -415,6 +438,40 @@ class FirebaseManager {
       firestore = FirebaseFirestore.instance;
       anchorCollection = FirebaseFirestore.instance.collection('anchors');
       objectCollection = FirebaseFirestore.instance.collection('objects');
+
+      showToast("Firebase Initialized");
+
+      const fatalError = true;
+
+      // Non-async exceptions
+      FlutterError.onError = (errorDetails) {
+        if (fatalError) {
+          // If you want to record a "fatal" exception
+          FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+          // ignore: dead_code
+        } else {
+          // If you want to record a "non-fatal" exception
+          FirebaseCrashlytics.instance.recordFlutterError(errorDetails);
+        }
+
+        showToast(errorDetails.exception);
+      };
+
+      // Async exceptions
+      PlatformDispatcher.instance.onError = (error, stack) {
+        if (fatalError) {
+          // If you want to record a "fatal" exception
+          FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+          // ignore: dead_code
+        } else {
+          // If you want to record a "non-fatal" exception
+          FirebaseCrashlytics.instance.recordError(error, stack);
+        }
+
+        showToast(error);
+
+        return true;
+      };
       return true;
     } catch (e) {
       return false;

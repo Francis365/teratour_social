@@ -5,6 +5,7 @@
 
   <!-- Sceneform requires OpenGL ES 3.0 or later. -->
   <uses-feature android:glEsVersion="0x00030000" android:required="true" />
+  <uses-feature android:name="android.hardware.camera.ar" android:required="false"/>
 
   <application>
     <!-- "AR Optional" app, contains non-AR features that can be used when
