@@ -3,6 +3,7 @@ import 'package:ar_flutter_plugin/managers/ar_session_manager.dart';
 import 'package:ar_flutter_plugin/managers/ar_object_manager.dart';
 import 'package:ar_flutter_plugin/managers/ar_anchor_manager.dart';
 import 'package:ar_flutter_plugin/models/ar_anchor.dart';
+import 'package:collection/collection.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -169,7 +170,7 @@ class _CloudAnchorWidgetState extends State<CloudAnchorWidget> {
     this.arSessionManager!.onInitialize(
           showFeaturePoints: false,
           showPlanes: true,
-          customPlaneTexturePath: "Images/triangle.png",
+          // customPlaneTexturePath: "Images/triangle.png",
           showWorldOrigin: true,
         );
     this.arObjectManager!.onInitialize();
@@ -252,13 +253,19 @@ class _CloudAnchorWidgetState extends State<CloudAnchorWidget> {
 
   Future<void> onNodeTapped(List<String> nodeNames) async {
     var foregroundNode =
-        nodes.firstWhere((element) => element.name == nodeNames.first);
-    arSessionManager!.onError(foregroundNode.data!["onTapText"]);
+        nodes.firstWhereOrNull((element) => element.name == nodeNames.first);
+    arSessionManager!
+        .onError(foregroundNode?.data?["onTapText"] ?? "An error occurred");
   }
 
   Future<void> onPlaneOrPointTapped(
       List<ARHitTestResult> hitTestResults) async {
-    var singleHitTestResult = hitTestResults.firstWhere(
+    // Log the hit test results
+    for (var result in hitTestResults) {
+      showToast('Hit test result: ${result.type}');
+    }
+
+    var singleHitTestResult = hitTestResults.firstWhereOrNull(
         (hitTestResult) => hitTestResult.type == ARHitTestResultType.plane);
     if (singleHitTestResult != null) {
       var newAnchor = ARPlaneAnchor(
@@ -308,8 +315,13 @@ class _CloudAnchorWidgetState extends State<CloudAnchorWidget> {
       // Upload child nodes to firebase
       if (anchor is ARPlaneAnchor) {
         for (var nodeName in anchor.childNodes) {
-          firebaseManager.uploadObject(
-              nodes.firstWhere((element) => element.name == nodeName));
+          var node =
+              nodes.firstWhereOrNull((element) => element.name == nodeName);
+
+          // Upload node to firebase
+          if (node != null) {
+            firebaseManager.uploadObject(node);
+          }
         }
       }
       setState(() {
