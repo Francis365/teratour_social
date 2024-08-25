@@ -1,2 +1,3 @@
 rootProject.name = 'wikitude_plugin'
 include ':wikitudesdk'
+project(':wikitudesdk').projectDir = new File(settingsDir, '../wikitudesdk') // Adjust the relative path if needed
