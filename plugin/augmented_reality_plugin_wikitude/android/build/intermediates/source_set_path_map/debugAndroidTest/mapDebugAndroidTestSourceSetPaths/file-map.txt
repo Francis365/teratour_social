@@ -1,7 +1,0 @@
-com.itera.wikitude_plugin.test-core-1.45.0-0 /Users/francis/.gradle/caches/transforms-4/b170a8f7222e5191ff6fc9464d6bf6f0/transformed/core-1.45.0/res
-com.itera.wikitude_plugin.test-androidTest-1 /Users/francis/Development/maui/teratour/plugin/augmented_reality_plugin_wikitude/android/build/generated/res/resValues/androidTest/debug
-com.itera.wikitude_plugin.test-mergeDebugAndroidTestResources-2 /Users/francis/Development/maui/teratour/plugin/augmented_reality_plugin_wikitude/android/build/intermediates/incremental/debugAndroidTest/mergeDebugAndroidTestResources/merged.dir
-com.itera.wikitude_plugin.test-mergeDebugAndroidTestResources-3 /Users/francis/Development/maui/teratour/plugin/augmented_reality_plugin_wikitude/android/build/intermediates/incremental/debugAndroidTest/mergeDebugAndroidTestResources/stripped.dir
-com.itera.wikitude_plugin.test-debugAndroidTest-4 /Users/francis/Development/maui/teratour/plugin/augmented_reality_plugin_wikitude/android/build/intermediates/merged_res/debugAndroidTest/mergeDebugAndroidTestResources
-com.itera.wikitude_plugin.test-debug-5 /Users/francis/Development/maui/teratour/plugin/augmented_reality_plugin_wikitude/android/build/intermediates/packaged_res/debug/packageDebugResources
-com.itera.wikitude_plugin.test-debug-6 /Users/francis/Development/maui/teratour/plugin/augmented_reality_plugin_wikitude/android/wikitudesdk/build/intermediates/packaged_res/debug/packageDebugResources
