@@ -1,7 +1,14 @@
+import 'dart:convert';
+
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:teratour/ar_view_widget.dart';
 import 'package:teratour/examples/cloudanchorexample.dart';
-import 'package:teratour/web_ar.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:teratour/helpers.dart';
+import 'package:teratour/wikitude/category.dart';
+import 'package:teratour/wikitude/sample.dart';
+import 'package:teratour/wikitude/samples.dart';
 
 import 'annotations.dart';
 
@@ -16,12 +23,20 @@ class AnnotationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
+      onTap: () async {
         // launchUrl(Uri.parse("https://francis365.github.io/Teratour-Web-AR2wotnk/"));
+
+        showToast("Loading...");
+
+        var sample = await getSample("3d Model At Geo Location");
         Navigator.push(
+          // ignore: use_build_context_synchronously
           context,
           MaterialPageRoute(
-            builder: (context) => CloudAnchorWidget(annotation: annotation),
+            builder: (context) => ArViewWidget(
+              position: annotation.position,
+              sample: sample!,
+            ),
           ),
         );
       },
@@ -65,6 +80,21 @@ class AnnotationView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<String> _loadSamplesJson() async {
+    return await rootBundle.loadString('samples/samples.json');
+  }
+
+  Future<Sample?> getSample(String name) async {
+    String samplesJson = await _loadSamplesJson();
+    List<dynamic> categoriesFromJson = json.decode(samplesJson);
+
+    var categories = categoriesFromJson.map((element) {
+      return Category.fromJson(element);
+    });
+
+    return Sample.findSampleByName([...categories], name);
   }
 
   Widget typeFactory(AnnotationType type) {
