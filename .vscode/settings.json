@@ -1,5 +1,5 @@
 {
-    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.configuration.updateBuildConfiguration": "automatic",
     "github-actions.workflows.pinned.workflows": [
         ".github/workflows/flutter_build.yml"
     ]
