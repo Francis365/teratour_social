@@ -27,7 +27,7 @@ jobs:
 
       # Clean flutter cache
       - name: Clean flutter cache
-        run: flutter clean
+        run: flutter pub cache repair
 
       # Fetch dependencies
       - name: Get dependencies
