@@ -26,8 +26,8 @@ jobs:
           channel: "stable"
 
       # Clean flutter cache
-      - name: Clean flutter cache
-        run: flutter pub cache clean
+      # - name: Clean flutter cache
+      #   run: flutter pub cache clean
 
       # Fetch dependencies
       - name: Get dependencies
