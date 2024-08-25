@@ -67,7 +67,7 @@ dependencies:
     git:
       url: https://github.com/Francis365/wikitude-flutter-plugin-examples.git
       path: plugin/augmented_reality_plugin_wikitude
-      ref: ca07c1f966116d55b04b0399ce41b2391aed47ce
+      ref: 2e39f9c3dbd74eca837321ed70933bb4b296e9a6
   # augmented_reality_plugin_wikitude:
   #   path: ./plugin/augmented_reality_plugin_wikitude/
   json_annotation: ^4.9.0
@@ -84,7 +84,7 @@ dependency_overrides:
     git:
       url: https://github.com/Francis365/wikitude-flutter-plugin-examples.git
       path: plugin/augmented_reality_plugin_wikitude
-      ref: ca07c1f966116d55b04b0399ce41b2391aed47ce
+      ref: 2e39f9c3dbd74eca837321ed70933bb4b296e9a6
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
