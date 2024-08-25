@@ -33,7 +33,7 @@ android {
         disable 'InvalidPackage'
     }
 
-    namespace 'com.itera.wikitude_plugin'
+    namespace 'com.wikitude.wikitude_plugin'
 }
 
 dependencies {
