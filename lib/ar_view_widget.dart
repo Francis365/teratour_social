@@ -109,8 +109,8 @@ class _ArViewState extends State<ArViewWidget> with WidgetsBindingObserver {
   }
 
   Future<void> onArchitectWidgetCreated() async {
-    architectWidget.load(loadPath, onLoadSuccess, onLoadFailed);
-    architectWidget.resume();
+    await architectWidget.load(loadPath, onLoadSuccess, onLoadFailed);
+    await architectWidget.resume();
 
     if (sample.requiredExtensions.contains("application_model_pois")) {
       List<Poi> pois =
@@ -184,10 +184,14 @@ class _ArViewState extends State<ArViewWidget> with WidgetsBindingObserver {
 
   Future<void> onLoadSuccess() async {
     loadFailed = false;
+
+    showToast("Loaded Architect World");
   }
 
   Future<void> onLoadFailed(String error) async {
     loadFailed = true;
     architectWidget.showAlert("Failed to load Architect World", error);
+
+    showToast("Failed to load Architect World: $error");
   }
 }
