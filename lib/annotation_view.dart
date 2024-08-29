@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:augmented_reality_plugin_wikitude/wikitude_plugin.dart';
+import 'package:augmented_reality_plugin_wikitude/wikitude_response.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -30,23 +32,31 @@ class AnnotationView extends StatelessWidget {
 
         var sample = await getSample("3d Model At Geo Location");
 
-        showToast("Sample: ${sample?.name}");
-
         if (sample == null) {
           showToast("Sample not found");
           return;
         }
 
-        Navigator.push(
-          // ignore: use_build_context_synchronously
-          context,
-          MaterialPageRoute(
-            builder: (context) => ArViewWidget(
-              position: annotation.position,
-              sample: sample,
-            ),
-          ),
-        );
+        var isSupported = await _isDeviceSupporting(sample.requiredFeatures);
+
+        if (isSupported.success) {
+          showToast(isSupported.message);
+
+          var isGranted = await _requestARPermissions(sample.requiredFeatures);
+
+          if (isGranted.success) {
+            Navigator.push(
+              // ignore: use_build_context_synchronously
+              context,
+              MaterialPageRoute(
+                builder: (context) => ArViewWidget(
+                  position: annotation.position,
+                  sample: sample,
+                ),
+              ),
+            );
+          }
+        }
       },
       child: FittedBox(
         fit: BoxFit.contain,
@@ -103,6 +113,14 @@ class AnnotationView extends StatelessWidget {
     });
 
     return Sample.findSampleByName([...categories], name);
+  }
+
+  Future<WikitudeResponse> _isDeviceSupporting(List<String> features) async {
+    return await WikitudePlugin.isDeviceSupporting(features);
+  }
+
+  Future<WikitudeResponse> _requestARPermissions(List<String> features) async {
+    return await WikitudePlugin.requestARPermissions(features);
   }
 
   Widget typeFactory(AnnotationType type) {
