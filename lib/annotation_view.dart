@@ -28,8 +28,6 @@ class AnnotationView extends StatelessWidget {
       onTap: () async {
         // launchUrl(Uri.parse("https://francis365.github.io/Teratour-Web-AR2wotnk/"));
 
-        showToast("Loading...");
-
         var sample = await getSample("3d Model At Geo Location");
 
         if (sample == null) {
@@ -37,26 +35,32 @@ class AnnotationView extends StatelessWidget {
           return;
         }
 
-        var isSupported = await _isDeviceSupporting(sample.requiredFeatures);
+        showToast("Loading...");
 
-        showToast(isSupported.message);
+        try {
+          var isSupported = await _isDeviceSupporting(sample.requiredFeatures);
 
-        var isGranted = await _requestARPermissions(sample.requiredFeatures);
+          showToast(isSupported.message);
 
-        showToast(isGranted.message);
+          var isGranted = await _requestARPermissions(sample.requiredFeatures);
 
-        Navigator.push(
-          // ignore: use_build_context_synchronously
-          context,
-          MaterialPageRoute(
-            builder: (context) => ArViewWidget(
-              position: annotation.position,
-              sample: sample,
+          showToast(isGranted.message);
+
+          Navigator.push(
+            // ignore: use_build_context_synchronously
+            context,
+            MaterialPageRoute(
+              builder: (context) => ArViewWidget(
+                position: annotation.position,
+                sample: sample,
+              ),
             ),
-          ),
-        );
+          );
+        } catch (error) {
+          showToast(error);
+        }
 
-        if (isSupported.success) {}
+        // if (isSupported.success) {}
       },
       child: FittedBox(
         fit: BoxFit.contain,
@@ -115,12 +119,12 @@ class AnnotationView extends StatelessWidget {
     return Sample.findSampleByName([...categories], name);
   }
 
-  Future<WikitudeResponse> _isDeviceSupporting(List<String> features) async {
-    return await WikitudePlugin.isDeviceSupporting(features);
+  Future<WikitudeResponse> _isDeviceSupporting(List<String> features) {
+    return WikitudePlugin.isDeviceSupporting(features);
   }
 
-  Future<WikitudeResponse> _requestARPermissions(List<String> features) async {
-    return await WikitudePlugin.requestARPermissions(features);
+  Future<WikitudeResponse> _requestARPermissions(List<String> features) {
+    return WikitudePlugin.requestARPermissions(features);
   }
 
   Widget typeFactory(AnnotationType type) {
