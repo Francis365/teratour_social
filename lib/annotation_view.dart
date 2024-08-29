@@ -39,24 +39,24 @@ class AnnotationView extends StatelessWidget {
 
         var isSupported = await _isDeviceSupporting(sample.requiredFeatures);
 
-        if (isSupported.success) {
-          showToast(isSupported.message);
+        showToast(isSupported.message);
 
-          var isGranted = await _requestARPermissions(sample.requiredFeatures);
+        var isGranted = await _requestARPermissions(sample.requiredFeatures);
 
-          if (isGranted.success) {
-            Navigator.push(
-              // ignore: use_build_context_synchronously
-              context,
-              MaterialPageRoute(
-                builder: (context) => ArViewWidget(
-                  position: annotation.position,
-                  sample: sample,
-                ),
-              ),
-            );
-          }
-        }
+        showToast(isGranted.message);
+
+        Navigator.push(
+          // ignore: use_build_context_synchronously
+          context,
+          MaterialPageRoute(
+            builder: (context) => ArViewWidget(
+              position: annotation.position,
+              sample: sample,
+            ),
+          ),
+        );
+
+        if (isSupported.success) {}
       },
       child: FittedBox(
         fit: BoxFit.contain,
