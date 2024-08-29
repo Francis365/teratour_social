@@ -45,8 +45,8 @@ packages:
     dependency: "direct main"
     description:
       path: "plugin/augmented_reality_plugin_wikitude"
-      ref: f1119b38b7100fbbe237ef00bb71f5fd19b66af0
-      resolved-ref: f1119b38b7100fbbe237ef00bb71f5fd19b66af0
+      ref: c3396081d1eb1937547ebfa95373cb0cf5dd480f
+      resolved-ref: c3396081d1eb1937547ebfa95373cb0cf5dd480f
       url: "https://github.com/Francis365/wikitude-flutter-plugin-examples.git"
     source: git
     version: "9.9.0"
