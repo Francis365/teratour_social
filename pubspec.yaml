@@ -16,7 +16,7 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 1.0.3+28
+version: 1.0.3+29
 
 environment:
   sdk: ">=3.3.4 <4.0.0"
@@ -67,7 +67,7 @@ dependencies:
     git:
       url: https://github.com/Francis365/wikitude-flutter-plugin-examples.git
       path: plugin/augmented_reality_plugin_wikitude
-      ref: f63fa01e0ce720f6190f880372663e089db16ad9
+      ref: 972cabbdc0226a71f020a3cb021de5365841f8b7
   # augmented_reality_plugin_wikitude:
   #   path: ./plugin/augmented_reality_plugin_wikitude/
   json_annotation: ^4.9.0
@@ -84,7 +84,7 @@ dependency_overrides:
     git:
       url: https://github.com/Francis365/wikitude-flutter-plugin-examples.git
       path: plugin/augmented_reality_plugin_wikitude
-      ref: f63fa01e0ce720f6190f880372663e089db16ad9
+      ref: 972cabbdc0226a71f020a3cb021de5365841f8b7
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
