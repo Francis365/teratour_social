@@ -2,15 +2,12 @@ import 'dart:convert';
 
 import 'package:augmented_reality_plugin_wikitude/wikitude_plugin.dart';
 import 'package:augmented_reality_plugin_wikitude/wikitude_response.dart';
-import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:teratour/ar_view_widget.dart';
-import 'package:teratour/examples/cloudanchorexample.dart';
 import 'package:teratour/helpers.dart';
 import 'package:teratour/wikitude/category.dart';
 import 'package:teratour/wikitude/sample.dart';
-import 'package:teratour/wikitude/samples.dart';
 
 import 'annotations.dart';
 
@@ -35,16 +32,22 @@ class AnnotationView extends StatelessWidget {
           return;
         }
 
-        showToast("Loading...");
+        // showToast("Loading...");
 
         try {
           var isSupported = await _isDeviceSupporting(sample.requiredFeatures);
 
-          showToast(isSupported.message);
+          if (!isSupported.success) {
+            showToast("Device not supported: ${isSupported.message}");
+            return;
+          }
 
           var isGranted = await _requestARPermissions(sample.requiredFeatures);
 
-          showToast(isGranted.message);
+          if (!isGranted.success) {
+            showToast("Permission not granted: ${isGranted.message}");
+            return;
+          }
 
           Navigator.push(
             // ignore: use_build_context_synchronously

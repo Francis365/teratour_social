@@ -44,7 +44,7 @@ class _ArViewState extends State<ArViewWidget> with WidgetsBindingObserver {
       loadPath = "samples/${sample.path}";
     }
 
-    showToast("loading $loadPath");
+    // showToast("loading $loadPath");
 
     super.initState();
 

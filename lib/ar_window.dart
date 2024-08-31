@@ -42,7 +42,7 @@ class _ArWindowState extends State<ArWindow> {
                   return;
                 }
 
-                Future.delayed(const Duration(seconds: 5), () {
+                Future.delayed(const Duration(seconds: 1), () {
                   setState(() {
                     annotations = fakeAnnotation(
                       position: position,
